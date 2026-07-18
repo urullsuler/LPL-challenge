@@ -8,33 +8,29 @@
       body {
         font-family: "Segoe UI", sans-serif;
         margin: 0;
-        background: #0f172a;
+        background: linear-gradient(135deg, #020617, #111827);
         color: #e2e8f0;
       }
-      .container {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 24px;
-      }
-      .card {
-        background: #111827;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 16px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      }
+      .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      .card { background: rgba(17, 24, 39, 0.95); border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
       h1, h2 { margin-top: 0; }
       .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #2563eb; margin-right: 8px; margin-bottom: 8px; }
       .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-      .metric { background: #1f2937; padding: 12px; border-radius: 10px; }
+      .metric { background: #1f2937; padding: 12px; border-radius: 12px; }
       .highlight { color: #fbbf24; font-weight: 600; }
+      table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+      th, td { padding: 10px; border-bottom: 1px solid #334155; text-align: left; }
+      th { color: #93c5fd; }
+      .badge { font-weight: 700; padding: 4px 8px; border-radius: 999px; display: inline-block; }
+      .good { background: #14532d; color: #dcfce7; }
+      .warn { background: #7c2d12; color: #ffedd5; }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="card">
         <h1>LPL 赛季改革看板</h1>
-        <p>本页面将方案中的核心模块转成可展示的改革看板：升降级、公开选秀、新秀上场、CVI 观察名单。</p>
+        <p>本页面把“保级压力、公开选秀、新秀上场率与 CVI 观察名单”四个模块整合成一个可展示的改革概览。</p>
         <span class="pill">弹性升降级</span>
         <span class="pill">公开选秀</span>
         <span class="pill">新秀强制出场</span>
@@ -42,7 +38,7 @@
       </div>
 
       <div class="card">
-        <h2>核心模块</h2>
+        <h2>规则摘要</h2>
         <div class="grid">
           <div class="metric">
             <div class="highlight">保级附加赛</div>
@@ -64,13 +60,63 @@
       </div>
 
       <div class="card">
-        <h2>项目已纳入的内容</h2>
-        <ul>
-          <li>新增了改革模块说明文档，覆盖升降级、公开选秀和 CVI 机制。</li>
-          <li>新增了规则配置文件，便于后续接入分析脚本或可视化系统。</li>
-          <li>将方案中的核心逻辑转为可展示的页面结构，方便后续扩展成图表看板。</li>
-        </ul>
+        <h2>CVI 评分榜</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>选手</th>
+              <th>位置</th>
+              <th>战队</th>
+              <th>CVI</th>
+              <th>评级</th>
+            </tr>
+          </thead>
+          <tbody id="rankings"></tbody>
+        </table>
       </div>
     </div>
+
+    <script>
+      const players = [
+        { name: 'Aster', position: 'ADC', team: 'Team Alpha', dpm: 780, goldDiff15: 280, kda: 7.8, vision: 42, unforcedErrors: 3 },
+        { name: 'Bai', position: 'Jungle', team: 'Team Beta', dpm: 710, goldDiff15: 220, kda: 6.6, vision: 36, unforcedErrors: 5 },
+        { name: 'Cao', position: 'Support', team: 'Team Beta', dpm: 640, goldDiff15: 185, kda: 5.9, vision: 33, unforcedErrors: 8 },
+        { name: 'Ding', position: 'Mid', team: 'Team Gamma', dpm: 820, goldDiff15: 310, kda: 8.6, vision: 44, unforcedErrors: 2 },
+        { name: 'Eason', position: 'Top', team: 'Team Alpha', dpm: 590, goldDiff15: 160, kda: 4.8, vision: 27, unforcedErrors: 10 },
+        { name: 'Faye', position: 'ADC', team: 'Team Gamma', dpm: 760, goldDiff15: 260, kda: 7.1, vision: 39, unforcedErrors: 4 }
+      ];
+
+      function computeCVI(player) {
+        const dpmScore = Math.min(100, (player.dpm / 900) * 100);
+        const goldScore = Math.min(100, (player.goldDiff15 / 400) * 100);
+        const kdaScore = Math.min(100, (player.kda / 10) * 100);
+        const visionScore = Math.min(100, (player.vision / 50) * 100);
+        const errorPenalty = Math.min(100, player.unforcedErrors * 20);
+        const raw = 0.45 * dpmScore + 0.25 * goldScore + 0.20 * kdaScore + 0.10 * visionScore - 0.15 * errorPenalty;
+        return Math.max(0, Math.min(100, raw));
+      }
+
+      function getLabel(cvi) {
+        if (cvi >= 85) return '<span class="badge good">核心级</span>';
+        if (cvi >= 70) return '<span class="badge good">主力级</span>';
+        if (cvi >= 65) return '<span class="badge warn">观察级</span>';
+        return '<span class="badge warn">低效级</span>';
+      }
+
+      const ranked = players
+        .map((player) => ({ ...player, cvi: computeCVI(player) }))
+        .sort((a, b) => b.cvi - a.cvi);
+
+      const tbody = document.getElementById('rankings');
+      tbody.innerHTML = ranked.map((player) => `
+        <tr>
+          <td>${player.name}</td>
+          <td>${player.position}</td>
+          <td>${player.team}</td>
+          <td>${player.cvi.toFixed(1)}</td>
+          <td>${getLabel(player.cvi)}</td>
+        </tr>
+      `).join('');
+    </script>
   </body>
 </html>
