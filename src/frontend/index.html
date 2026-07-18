@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LPL 赛季改革看板</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .card {
+        background: #111827;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      }
+      h1, h2 { margin-top: 0; }
+      .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #2563eb; margin-right: 8px; margin-bottom: 8px; }
+      .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      .metric { background: #1f2937; padding: 12px; border-radius: 10px; }
+      .highlight { color: #fbbf24; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>LPL 赛季改革看板</h1>
+        <p>本页面将方案中的核心模块转成可展示的改革看板：升降级、公开选秀、新秀上场、CVI 观察名单。</p>
+        <span class="pill">弹性升降级</span>
+        <span class="pill">公开选秀</span>
+        <span class="pill">新秀强制出场</span>
+        <span class="pill">CVI 观察名单</span>
+      </div>
+
+      <div class="card">
+        <h2>核心模块</h2>
+        <div class="grid">
+          <div class="metric">
+            <div class="highlight">保级附加赛</div>
+            <p>倒数第二名与次级联赛冠军进行 BO5 对决，保级压力直接落在战队管理层身上。</p>
+          </div>
+          <div class="metric">
+            <div class="highlight">公开选秀</div>
+            <p>面向高分路人王、挑战者联赛和高校队伍开放报名，提升新人进入职业体系的通道。</p>
+          </div>
+          <div class="metric">
+            <div class="highlight">新秀上场率</div>
+            <p>每支战队必须保证一定比例的新秀出场时间，减少“老将占坑”的情况。</p>
+          </div>
+          <div class="metric">
+            <div class="highlight">CVI 观察名单</div>
+            <p>连续两赛季低于阈值的选手将进入观察名单，并受到薪资或签约限制。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>项目已纳入的内容</h2>
+        <ul>
+          <li>新增了改革模块说明文档，覆盖升降级、公开选秀和 CVI 机制。</li>
+          <li>新增了规则配置文件，便于后续接入分析脚本或可视化系统。</li>
+          <li>将方案中的核心逻辑转为可展示的页面结构，方便后续扩展成图表看板。</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

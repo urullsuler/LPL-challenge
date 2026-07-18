@@ -1,0 +1,24 @@
+{
+  "relegation": {
+    "direct_relegation_spots": 1,
+    "playoff_spots": 1,
+    "bo5": true,
+    "buffer_fund": true
+  },
+  "rookie_policy": {
+    "minimum_rookie_games_ratio": 0.25,
+    "minimum_rookie_starts_per_team": 2,
+    "penalty": "reduced_dividend_and_transfer_priority"
+  },
+  "cvi": {
+    "threshold_warning": 65,
+    "threshold_core": 85,
+    "observation_period": 2,
+    "salary_restriction": true
+  },
+  "talent_pipeline": {
+    "open_recruitment": true,
+    "challenger_link": true,
+    "public_tryout": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "teams": [
+    {
+      "team": "Team Alpha",
+      "budget": 24000000,
+      "youth_investment": 0.18,
+      "recent_rank": 8,
+      "relegation_risk": "medium"
+    },
+    {
+      "team": "Team Beta",
+      "budget": 15000000,
+      "youth_investment": 0.09,
+      "recent_rank": 11,
+      "relegation_risk": "high"
+    },
+    {
+      "team": "Team Gamma",
+      "budget": 30000000,
+      "youth_investment": 0.24,
+      "recent_rank": 5,
+      "relegation_risk": "low"
+    }
+  ]
+}
